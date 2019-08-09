@@ -66,7 +66,8 @@ public class LiteratureMapGenerator {
 
         for (BibTeXEntry bibTeXEntry : entries.values()) {
             Value belongingGroup = bibTeXEntry.getField(groupingKey);
-            String belongingGroupString = naKeyString;
+            Set<String> belongingGroupStrings = new HashSet<>();
+
 
             Value file = bibTeXEntry.getField(fileKey);
             Value title = bibTeXEntry.getField(BibTeXEntry.KEY_TITLE);
@@ -78,17 +79,21 @@ public class LiteratureMapGenerator {
 
             if (belongingGroup == null) {
                 System.err.println("No belonging group key found for literature: " + title.toUserString());
+                belongingGroupStrings.add(naKeyString);
             } else {
-                belongingGroupString = belongingGroup.toUserString();
+                Collections.addAll(belongingGroupStrings, belongingGroup.toUserString().split(","));
             }
 
-            if (!literatureMap.containsKey(belongingGroupString)) {
-                literatureMap.put(belongingGroupString, new TreeSet<>());
+            for (String belongingGroupString : belongingGroupStrings) {
+                belongingGroupString = belongingGroupString.trim();
+                if (!literatureMap.containsKey(belongingGroupString)) {
+                    literatureMap.put(belongingGroupString, new TreeSet<>());
+                }
+
+                String fileName = file != null ? file.toUserString() : null;
+
+                literatureMap.get(belongingGroupString).add(new LiteratureMapEntry(title.toUserString(), fileName));
             }
-
-            String fileName = file != null ? file.toUserString() : null;
-
-            literatureMap.get(belongingGroupString).add(new LiteratureMapEntry(title.toUserString(), fileName));
         }
 
         StringBuilder markdownTableSB = new StringBuilder();
