@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'biblatex-literature-map-generator'
+version '1.0'
+
+sourceCompatibility = 12
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.jbibtex', name: 'jbibtex', version: '1.0.17'
+}
