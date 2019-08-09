@@ -1,6 +1,5 @@
 import org.jbibtex.*;
 
-import javax.swing.plaf.synth.SynthTabbedPaneUI;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
